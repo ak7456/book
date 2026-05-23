@@ -1,6 +1,5 @@
 import { useRef, useCallback } from 'react';
 import { View, Alert } from 'react-native';
-import { captureRef } from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 import * as MediaLibrary from 'expo-media-library';
 
@@ -9,6 +8,8 @@ export function useShareCard() {
 
   const capture = useCallback(async (): Promise<string> => {
     if (!cardRef.current) throw new Error('Card ref not ready');
+    // 동적 import: Expo Go에서 네이티브 모듈 부재로 인한 시작 크래시 방지
+    const { captureRef } = await import('react-native-view-shot');
     return captureRef(cardRef, {
       format: 'png',
       quality: 1.0,
